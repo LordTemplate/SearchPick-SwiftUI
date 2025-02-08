@@ -7,11 +7,19 @@
 
 import Testing
 @testable import CodeChallenge
+import XCTest
 
-struct CodeChallengeTests {
+class FlickrViewModelTests: XCTestCase {
+    func testFetchPhotos() {
+        let viewModel = FlickrViewModel()
+        let expectation = XCTestExpectation(description: "Fetch photos")
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+        viewModel.fetchPhotos(for: "dog")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            XCTAssertFalse(viewModel.photos.isEmpty)
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 5)
     }
-
 }
